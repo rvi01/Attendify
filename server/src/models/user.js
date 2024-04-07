@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 
 const User = mongoose.model("User",{
-
     email: {
         type: String,
         required : true,
@@ -19,7 +18,15 @@ const User = mongoose.model("User",{
         required: true,
         trim: true,
     },
-
+    selectBatch: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    token: {
+        type: String,
+        default: null
+    },
 });
 
 module.exports = User;
