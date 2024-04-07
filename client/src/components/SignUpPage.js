@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'
 import Logo from '../images/logo.png';
 import SignUpImage from '../images/sign-up-form.png';
 import Hide from '../images/Hide.png';
 import Eye from '../images/eye.png';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const SignupPage = () => {
+  const navigate = useNavigate()
   const [email, setEmail] = useState('');
   const [selectBatch, setSelectBatch] = useState('Batch A');
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -35,9 +38,20 @@ const SignupPage = () => {
       };
 
       const response = await axios.post('http://localhost:8000/api/submit', formData);
-
-      console.log('Form submitted successfully:', response.data);
-      console.log("formData =>",formData);
+      const { token } = response.data.userData;
+      localStorage.setItem('token', token);
+      console.log("localStorage =>",localStorage);
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: 'Form submitted successfully!',
+        confirmButtonText: 'OK'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate('/signin'); // Redirect to the profile page
+        }
+      });
+      console.log("response =>",response.data.userData);
     } catch (error) {
       // Handle error
       console.error('Error submitting form:', error);
@@ -80,9 +94,9 @@ const SignupPage = () => {
                   onChange={(e) => setSelectBatch(e.target.value)}
                 >
                   <option value=''>Select Your Batch</option>
-                  <option value='Batch A'>Batch A</option>
-                  <option value='Batch B'>Batch B</option>
-                  <option value='Batch C'>Batch C</option>
+                  <option value='A'>Batch A</option>
+                  <option value='B'>Batch B</option>
+                  <option value='C'>Batch C</option>
                 </select>
               </div>
               {/* Password field */}
