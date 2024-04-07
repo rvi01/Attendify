@@ -3,13 +3,15 @@ import SignInImage from '../images/login-form.png';
 import Logo from '../images/logo.png';
 import Hide from '../images/Hide.png';
 import Eye from '../images/eye.png';
+import useAuth from './AuthContext';
 
 const SignInPage = () => {
+  useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-
+  
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
