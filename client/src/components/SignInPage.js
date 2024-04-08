@@ -4,6 +4,8 @@ import Logo from '../images/logo.png';
 import Hide from '../images/Hide.png';
 import Eye from '../images/eye.png';
 import useAuth from './AuthContext';
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const SignInPage = () => {
   useAuth();
@@ -15,6 +17,43 @@ const SignInPage = () => {
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
+
+  const handleCheckboxChange = (e) => {
+    setRememberMe(e.target.checked);
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = {
+        email,
+        password,
+        rememberMe
+      };
+      const response = await axios.post('http://localhost:8000/api/login', formData);
+  
+      console.log("response =>",response);
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: response.data.message,
+        confirmButtonText: 'OK'
+      }).then((result) => {
+        if (result.isConfirmed) {
+
+        }
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: error.response.data.message,
+        confirmButtonText: 'OK'
+      })
+    }
+    
+  }
+
   return (
     <div className='flex h-screen'>
       <div className='w-1/2'>
@@ -29,7 +68,7 @@ const SignInPage = () => {
         <p className='custom-size-text text-placeHolderColor mb-8 mr-20'>
           Welcome back! Please enter your details.
         </p>
-        <form action=''>
+        <form onSubmit={handleLogin}>
           {/* Email field */}
           <div className=' m-2 flex flex-col'>
             <label className='text-[14px]' htmlFor='email'>
@@ -80,8 +119,8 @@ const SignInPage = () => {
                 className='mr-1'
                 type='checkbox'
                 id='rememberMe'
-                value={rememberMe}
-                onChange={(e) => setRememberMe(e.target.value)}
+                checked={rememberMe} // Value depends on the state
+                onChange={handleCheckboxChange}
               />
               <label className='text-sm' htmlFor='rememberMe'>
                 Remember Me
@@ -105,7 +144,7 @@ const SignInPage = () => {
           <div className='w-65 mt-4'>
             <p className='custom-size-text w-full text-center mt-2'>
               Don’t have an account?
-              <a href={'#'} className='text-customBlue font-medium'>
+              <a href='/' className='text-customBlue font-medium'>
                 Sign up
               </a>
             </p>
