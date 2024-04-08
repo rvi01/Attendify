@@ -7,7 +7,7 @@ const useAuth = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    console.log("token from auth",token)
+    
     if (!token || token === "null" || token === "undefined") {
       Swal.fire({
         icon: "error",
