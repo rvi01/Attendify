@@ -23,7 +23,9 @@ const SignupPage = () => {
   const togglePasswordVisibilityTwo = () => {
     setPasswordHide(!passwordHide);
   };
-
+  const handleCheckboxChange = (e) => {
+    setRememberMe(e.target.checked);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -36,11 +38,12 @@ const SignupPage = () => {
         confirmPassword,
         rememberMe
       };
-
       const response = await axios.post('http://localhost:8000/api/submit', formData);
+      
       const { token } = response.data.userData;
+
       localStorage.setItem('token', token);
-      console.log("localStorage =>",localStorage);
+
       Swal.fire({
         icon: 'success',
         title: 'Success!',
@@ -51,10 +54,13 @@ const SignupPage = () => {
           navigate('/signin'); // Redirect to the profile page
         }
       });
-      console.log("response =>",response.data.userData);
     } catch (error) {
-      // Handle error
-      console.error('Error submitting form:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: error.response.data.error,
+        confirmButtonText: 'OK'
+      })
     }
   };
 
@@ -162,8 +168,8 @@ const SignupPage = () => {
                     className='mr-1'
                     type='checkbox'
                     id='rememberMe'
-                    value={rememberMe}
-                    onChange={(e) => setRememberMe(e.target.value)}
+                    checked={rememberMe} // Value depends on the state
+                    onChange={handleCheckboxChange}
                   />
                   <label className='text-sm' htmlFor='rememberMe'>
                     Remember Me
@@ -187,7 +193,7 @@ const SignupPage = () => {
               <div className='w-65 mt-4'>
                 <p className='custom-size-text w-full text-center mt-2'>
                   Already have an account?{' '}
-                  <a href={'#'} className='text-customBlue font-medium'>
+                  <a href="/signin" className='text-customBlue font-medium'>
                     Log In
                   </a>
                 </p>
