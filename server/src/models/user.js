@@ -23,6 +23,10 @@ const User = mongoose.model("User",{
         required: true,
         trim: true,
     },
+    rememberMe: {
+        type: String,
+        trim: true,
+    },
     token: {
         type: String,
         default: null
