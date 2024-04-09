@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import SignInImage from '../images/login-form.png';
 import Logo from '../images/logo.png';
 import Hide from '../images/Hide.png';
@@ -9,6 +10,7 @@ import Swal from 'sweetalert2';
 
 const SignInPage = () => {
   useAuth();
+  const navigate = useNavigate()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -40,7 +42,7 @@ const SignInPage = () => {
         confirmButtonText: 'OK'
       }).then((result) => {
         if (result.isConfirmed) {
-
+          navigate(`/dashboard/student/${response.data.user._id}`);
         }
       });
     } catch (error) {
@@ -129,7 +131,7 @@ const SignInPage = () => {
             <div className='text-sm m-2'>
               {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
               <a href='#' className='text-customBlue'>
-                Forget Password
+                Forget Passwordj
               </a>
             </div>
           </div>
@@ -143,7 +145,7 @@ const SignInPage = () => {
           </div>
           <div className='w-65 mt-4'>
             <p className='custom-size-text w-full text-center mt-2'>
-              Don’t have an account?
+              Don’t have an account ?
               <a href='/' className='text-customBlue font-medium'>
                 Sign up
               </a>

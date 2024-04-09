@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 import Logo from '../images/logo.png';
 import SignUpImage from '../images/sign-up-form.png';
 import Hide from '../images/Hide.png';
@@ -47,7 +47,7 @@ const SignupPage = () => {
       Swal.fire({
         icon: 'success',
         title: 'Success!',
-        text: 'Form submitted successfully!',
+        text: 'SignIn successfully!',
         confirmButtonText: 'OK'
       }).then((result) => {
         if (result.isConfirmed) {

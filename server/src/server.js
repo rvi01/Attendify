@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
+const mongoose = require('mongoose');
 var cookieParser = require('cookie-parser')
 const port = process.env.PORT || 8000;
 require("./db/mongoose");
@@ -65,7 +66,7 @@ app.post('/api/login', async(req, res) => {
 
         const password = user.password;
         const isPasswordValid = await bcrypt.compare(req.body.password, password);
-        
+
         if (!isPasswordValid) {
             return res.status(401).json({ message: 'Invalid username or password' });
         }
@@ -75,6 +76,21 @@ app.post('/api/login', async(req, res) => {
         {
             console.error('Error Logging In:', error);
             res.status(500).json({ error: 'An error occurred while Logging In' });
+        }
+    }
+})
+
+app.get('/api/dashboard/student/',async(req, res) => {
+    try {
+        const _id = "66133e05ee3b1731b1abeae5"
+        const objectId = new mongoose.Types.ObjectId(_id);
+        const existingUser = await User.findOne({ _id: objectId });
+        console.log(existingUser);
+        res.status(201).json({existingUser});
+    } catch (error) {
+        {
+            console.error('Error Logging In:', error);
+            res.status(500).json({ error: 'An error occurred while Loading Dashboard' });
         }
     }
 })
