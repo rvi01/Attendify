@@ -4,11 +4,15 @@ import TroubleLoggingImage from '../images/troubleLoggingIn.png';
 
 const TroubleLoggingIn = () => {
   return (
-    <div className='flex h-screen'>
-      <div className='w-1/2'>
-        <img src={SignInImage} alt='' className='w-full h-full object-cover' />
+    <div className='flex flex-col md:flex-row h-screen'>
+      <div className='w-full md:w-1/2 '>
+        <img
+          src={SignInImage}
+          alt=''
+          className='w-full md:w-auto h-auto object-cover'
+        />
       </div>
-      <div className='flex flex-col justify-center   w-1/2 pl-40'>
+      <div className='flex flex-col justify-center w-full md:w-1/2 md:pl-40'>
         <div className='mb-8'>
           <img src={TroubleLoggingImage} alt='' />
         </div>
