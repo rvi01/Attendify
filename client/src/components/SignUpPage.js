@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 import Logo from '../images/logo.png';
 import SignUpImage from '../images/sign-up-form.png';
 import Hide from '../images/Hide.png';
 import Eye from '../images/eye.png';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+// import validator from 'validator';
 
 const SignupPage = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [selectBatch, setSelectBatch] = useState('Batch A');
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -28,30 +29,32 @@ const SignupPage = () => {
     e.preventDefault();
 
     try {
-
       const formData = {
         email,
         selectBatch,
         password,
         confirmPassword,
-        rememberMe
+        rememberMe,
       };
 
-      const response = await axios.post('http://localhost:8000/api/submit', formData);
+      const response = await axios.post(
+        'http://localhost:8000/api/submit',
+        formData
+      );
       const { token } = response.data.userData;
       localStorage.setItem('token', token);
-      console.log("localStorage =>",localStorage);
+      console.log('localStorage =>', localStorage);
       Swal.fire({
         icon: 'success',
         title: 'Success!',
         text: 'Form submitted successfully!',
-        confirmButtonText: 'OK'
+        confirmButtonText: 'OK',
       }).then((result) => {
         if (result.isConfirmed) {
           navigate('/signin'); // Redirect to the profile page
         }
       });
-      console.log("response =>",response.data.userData);
+      console.log('response =>', response.data.userData);
     } catch (error) {
       // Handle error
       console.error('Error submitting form:', error);
@@ -80,6 +83,7 @@ const SignupPage = () => {
                   placeholder='Enter Your Email'
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  required
                 />
               </div>
               {/* Select Batch field */}
@@ -92,6 +96,7 @@ const SignupPage = () => {
                   id='selectBatch'
                   value={selectBatch}
                   onChange={(e) => setSelectBatch(e.target.value)}
+                  required
                 >
                   <option value=''>Select Your Batch</option>
                   <option value='A'>Batch A</option>
@@ -111,6 +116,7 @@ const SignupPage = () => {
                   placeholder='******'
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  required
                 />
                 <button
                   type='button'
@@ -141,6 +147,7 @@ const SignupPage = () => {
                   placeholder='******'
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
                 />
                 <button
                   type='button'

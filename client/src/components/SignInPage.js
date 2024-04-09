@@ -11,12 +11,12 @@ const SignInPage = () => {
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  
+
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
   return (
-    <div className='flex h-screen'>
+    <div className='flex flex-col h-screen'>
       <div className='w-1/2'>
         <img src={SignInImage} alt='' className='w-full h-full object-cover' />
       </div>
