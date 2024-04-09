@@ -49,7 +49,7 @@ const SignupPage = () => {
         confirmButtonText: 'OK'
       }).then((result) => {
         if (result.isConfirmed) {
-          navigate("/signin"); // Redirect to the profile page
+          navigate("/profile"); // Redirect to the profile page
         }
       });
     } catch (error) {

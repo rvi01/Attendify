@@ -42,7 +42,7 @@ const SignInPage = () => {
         confirmButtonText: 'OK'
       }).then((result) => {
         if (result.isConfirmed) {
-          navigate(`/dashboard/student/${response.data.user._id}`);
+          navigate(`/profile`);
         }
       });
     } catch (error) {
@@ -57,19 +57,19 @@ const SignInPage = () => {
   }
 
   return (
-    <div className='flex flex-col h-screen'>
-      <div className='w-1/2'>
-        <img src={SignInImage} alt='' className='w-full h-full object-cover' />
+    <div className='flex h-screen'>
+    <div className='w-1/2'>
+      <img src={SignInImage} alt='' className='w-full h-full object-cover' />
+    </div>
+    <div className='w-1/2 flex flex-col justify-center items-center pl-8'>
+      <div className='flex justify-start'>
+        <img src={Logo} alt='' className='mr-20' />
       </div>
-      <div className='w-1/2 flex flex-col justify-center items-center pl-8'>
-        <div className='flex justify-start'>
-          <img src={Logo} alt='' className='mr-20' />
-        </div>
 
-        <h1 className=' text-customBlue mt-4 mr-20'>Welcome back!</h1>
-        <p className='custom-size-text text-placeHolderColor mb-8 mr-20'>
-          Welcome back! Please enter your details.
-        </p>
+      <h1 className=' text-customBlue mt-4 mr-20'>Welcome back!</h1>
+      <p className='custom-size-text text-placeHolderColor mb-8 mr-20'>
+        Welcome back! Please enter your details.
+      </p>
         <form onSubmit={handleLogin}>
           {/* Email field */}
           <div className=' m-2 flex flex-col'>
