@@ -45,11 +45,11 @@ const SignupPage = () => {
       Swal.fire({
         icon: 'success',
         title: 'Success!',
-        text: 'Form submitted successfully!',
-        confirmButtonText: 'OK',
+        text: 'SignIn successfully!',
+        confirmButtonText: 'OK'
       }).then((result) => {
         if (result.isConfirmed) {
-          navigate("/signin"); // Redirect to the profile page
+          navigate("/profile"); // Redirect to the profile page
         }
       });
     } catch (error) {
