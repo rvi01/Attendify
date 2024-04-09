@@ -1,16 +1,17 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Logo from "../images/logo.png";
-import SignUpImage from "../images/sign-up-form.png";
-import Hide from "../images/Hide.png";
-import Eye from "../images/eye.png";
-import axios from "axios";
-import Swal from "sweetalert2";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Logo from '../images/logo.png';
+import SignUpImage from '../images/sign-up-form.png';
+import Hide from '../images/Hide.png';
+import Eye from '../images/eye.png';
+import axios from 'axios';
+import Swal from 'sweetalert2';
+// import validator from 'validator';
 
 const SignupPage = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [selectBatch, setSelectBatch] = useState("Batch A");
+  const [email, setEmail] = useState('');
+  const [selectBatch, setSelectBatch] = useState('Batch A');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [passwordHide, setPasswordHide] = useState(false);
   const [password, setPassword] = useState("");
@@ -37,20 +38,15 @@ const SignupPage = () => {
         confirmPassword,
         rememberMe,
       };
-      const response = await axios.post(
-        "http://localhost:8000/api/submit",
-        formData
-      );
+      const response = await axios.post( 'http://localhost:8000/api/submit',formData);
 
       const { token } = response.data.userData;
-
-      localStorage.setItem("token", token);
-
+      localStorage.setItem('token', token);
       Swal.fire({
-        icon: "success",
-        title: "Success!",
-        text: "Form submitted successfully!",
-        confirmButtonText: "OK",
+        icon: 'success',
+        title: 'Success!',
+        text: 'Form submitted successfully!',
+        confirmButtonText: 'OK',
       }).then((result) => {
         if (result.isConfirmed) {
           navigate("/signin"); // Redirect to the profile page
@@ -61,7 +57,7 @@ const SignupPage = () => {
         icon: "error",
         title: "Oops...",
         text: error.response.data.error,
-        confirmButtonText: "OK",
+        confirmButtonText: 'OK',
       });
     }
   };
@@ -88,6 +84,7 @@ const SignupPage = () => {
                   placeholder="Enter Your Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  required
                 />
               </div>
               {/* Select Batch field */}
@@ -100,6 +97,7 @@ const SignupPage = () => {
                   id="selectBatch"
                   value={selectBatch}
                   onChange={(e) => setSelectBatch(e.target.value)}
+                  required
                 >
                   <option value="">Select Your Batch</option>
                   <option value="A">Batch A</option>
@@ -119,6 +117,7 @@ const SignupPage = () => {
                   placeholder="******"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  required
                 />
                 <button
                   type="button"
@@ -149,6 +148,7 @@ const SignupPage = () => {
                   placeholder="******"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
                 />
                 <button
                   type="button"
@@ -192,10 +192,10 @@ const SignupPage = () => {
                   Sign Up
                 </button>
               </div>
-              <div className="w-65 mt-4">
-                <p className="custom-size-text w-full text-center mt-2">
-                  Already have an account?{" "}
-                  <a href="/signin" className="text-customBlue font-medium">
+              <div className='w-65 mt-4'>
+                <p className='custom-size-text w-full text-center mt-2'>
+                  Already have an account?{' '}
+                  <a href='/signin' className='text-customBlue font-medium'>
                     Log In
                   </a>
                 </p>
