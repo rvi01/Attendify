@@ -5,7 +5,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import SignupPage from './components/SignUpPage';
 import SignInPage from './components/SignInPage';
 import TroubleLoggingIn from './components/TroubleLoggingIn';
-import Header from './components/Header';
+// import Header from './components/Header';
+import InstructorProfile from './components/InstructorProfile';
 
 const App = () => {
   return (
@@ -16,7 +17,10 @@ const App = () => {
         <Route />
         <Route path='/troublelogging' element={<TroubleLoggingIn />} />
         <Route />
-        <Route path='/header' element={<Header />}></Route>
+        <Route
+          path='/instructorprofile'
+          element={<InstructorProfile />}
+        ></Route>
       </Routes>
     </Router>
   );
