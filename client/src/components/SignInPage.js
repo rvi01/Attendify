@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import SignInImage from '../images/login-form.png';
 import Logo from '../images/logo.png';
 import Hide from '../images/Hide.png';
@@ -9,6 +10,7 @@ import Swal from 'sweetalert2';
 
 const SignInPage = () => {
   useAuth();
+  const navigate = useNavigate()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -40,7 +42,7 @@ const SignInPage = () => {
         confirmButtonText: 'OK'
       }).then((result) => {
         if (result.isConfirmed) {
-
+          navigate(`/profile`);
         }
       });
     } catch (error) {
@@ -55,19 +57,19 @@ const SignInPage = () => {
   }
 
   return (
-    <div className='flex flex-col h-screen'>
-      <div className='w-1/2'>
-        <img src={SignInImage} alt='' className='w-full h-full object-cover' />
+    <div className='flex h-screen'>
+    <div className='w-1/2'>
+      <img src={SignInImage} alt='' className='w-full h-full object-cover' />
+    </div>
+    <div className='w-1/2 flex flex-col justify-center items-center pl-8'>
+      <div className='flex justify-start'>
+        <img src={Logo} alt='' className='mr-20' />
       </div>
-      <div className='w-1/2 flex flex-col justify-center items-center pl-8'>
-        <div className='flex justify-start'>
-          <img src={Logo} alt='' className='mr-20' />
-        </div>
 
-        <h1 className=' text-customBlue mt-4 mr-20'>Welcome back!</h1>
-        <p className='custom-size-text text-placeHolderColor mb-8 mr-20'>
-          Welcome back! Please enter your details.
-        </p>
+      <h1 className=' text-customBlue mt-4 mr-20'>Welcome back!</h1>
+      <p className='custom-size-text text-placeHolderColor mb-8 mr-20'>
+        Welcome back! Please enter your details.
+      </p>
         <form onSubmit={handleLogin}>
           {/* Email field */}
           <div className=' m-2 flex flex-col'>
@@ -129,7 +131,7 @@ const SignInPage = () => {
             <div className='text-sm m-2'>
               {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
               <a href='#' className='text-customBlue'>
-                Forget Password
+                Forget Passwordj
               </a>
             </div>
           </div>
@@ -143,7 +145,7 @@ const SignInPage = () => {
           </div>
           <div className='w-65 mt-4'>
             <p className='custom-size-text w-full text-center mt-2'>
-              Don’t have an account?
+              Don’t have an account ?
               <a href='/' className='text-customBlue font-medium'>
                 Sign up
               </a>
