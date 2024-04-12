@@ -10,7 +10,7 @@ const InstructorProfile = () => {
     <>
       <Header />
 
-      <div className='flex flex-col md:flex-row md:items-center md:justify-center justify-center items-center '>
+      <div className='flex flex-col md:flex-row md:items-center md:justify-center justify-center items-center'>
         {/* Padlock Image */}
         <div className='order-1 md:order-none md:w-1/2 md:pl-8 md:pr-4 flex flex-col items-center justify-center mt-20 md:mt-20'>
           <h1 className='pl-8 ml-16 mt-4 text-center mb-8'>My Profile</h1>
@@ -21,9 +21,15 @@ const InstructorProfile = () => {
           />
         </div>
         {/* Profile Form */}
-        <div className='order-2 md:order-none md:w-1/2 md:pr-8 md:pl-4 w-full md:w-3/5 mt-70 sm:mt-10'>
+        <div className='order-2  mt-90 md:order-none md:w-1/2 md:pr-8 md:pl-4 w-full md:w-3/5 mt-70 sm:mt-10'>
           <Formik
-            initialValues={{ email: '', password: '' }}
+            initialValues={{
+              email: '',
+              password: '',
+              firstName: '',
+              lastName: '',
+              phoneNumber: '',
+            }}
             validate={(values) => {
               const errors = {};
               if (!values.email) {
@@ -36,6 +42,7 @@ const InstructorProfile = () => {
               return errors;
             }}
             onSubmit={(values, { setSubmitting }) => {
+              console.log('Submitted values:', values);
               setTimeout(() => {
                 alert(JSON.stringify(values, null, 2));
                 setSubmitting(false);
@@ -54,7 +61,7 @@ const InstructorProfile = () => {
             }) => (
               <form
                 onSubmit={handleSubmit}
-                className='space-y-4  w-[500px] px-8 py-28 border rounded  border-4 border-gray-300 bg-white'
+                className='space-y-4  w-[500px] px-8 py-20 border rounded  border-4 border-gray-300 bg-white'
               >
                 {/* First Name */}
                 <div className='flex flex-col'>
@@ -95,6 +102,9 @@ const InstructorProfile = () => {
                     id='email'
                     className=' border rounded p-2'
                     placeholder='abcxyz@gmail.com'
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.email}
                   />
                   {errors.email && touched.email && errors.email}
                 </div>
@@ -110,7 +120,7 @@ const InstructorProfile = () => {
                         className=' border rounded p-2 '
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        value={values.email}
+                        value={values.areaCode}
                       >
                         {areaCodes.map((areaCode, index) => (
                           <option key={index} value={areaCode}>
@@ -146,7 +156,7 @@ const InstructorProfile = () => {
           </Formik>
         </div>
       </div>
-      <p className='text-center p-8 mt-20 '>
+      <p className='text-center p-8 mt-10 '>
         2024 Pragratime. All rights Reserved
       </p>
     </>
