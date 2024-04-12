@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-
 import Logo from '../images/logo.png';
 import SignUpImage from '../images/sign-up-form.png';
 import Hide from '../images/Hide.png';
 import Eye from '../images/eye.png';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+
 // import validator from 'validator';
 
-const SignupPage = () => {
+const SignupPageForStudent = () => {
   const navigate = useNavigate();
-
   const [email, setEmail] = useState('');
   const [selectBatch, setSelectBatch] = useState('Batch A');
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -20,7 +19,6 @@ const SignupPage = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [userType, setUserType] = useState('');
-
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
@@ -89,14 +87,14 @@ const SignupPage = () => {
               <li className='me-2'>
                 <Link
                   to='/signupstudent'
-                  className={`inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300 `}
+                  className={`inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300`}
                 >
                   Student
                 </Link>
               </li>
             </ul>
             <h1 className='p-2  mt-4 text-xl text-customBlue'>
-              Welcome Instructor
+              Welcome Student!
             </h1>
             <form onSubmit={handleSubmit} className='p-2 text-formFontColor'>
               {/* Email field */}
@@ -242,4 +240,4 @@ const SignupPage = () => {
   );
 };
 
-export default SignupPage;
+export default SignupPageForStudent;
