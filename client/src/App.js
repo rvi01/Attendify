@@ -8,6 +8,7 @@ import TroubleLoggingIn from './components/TroubleLoggingIn';
 import SignupPageForStudent from './components/SignUpPageForStudent';
 import Header from './components/Header';
 import Profile from './components/Profile';
+import InstructorProfile from './components/InstructorProfile';
 
 const App = () => {
   return (
@@ -19,7 +20,10 @@ const App = () => {
         <Route path='/troublelogging' element={<TroubleLoggingIn />} />
         <Route path='/header' element={<Header />}></Route>
         <Route path='/signupstudent' element={<SignupPageForStudent />}></Route>
-        SignupPageForStudent
+        <Route
+          path='/instructorprofile'
+          element={<InstructorProfile />}
+        ></Route>
       </Routes>
     </Router>
   );

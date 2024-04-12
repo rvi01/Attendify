@@ -9,6 +9,7 @@ module.exports = {
         formFontColor: '#4A4543',
         placeHolderColor: '#808080',
         troubleLogging: '#252525D9',
+        blueBackgroundColor: '#F9F9F9',
       },
     },
   },
