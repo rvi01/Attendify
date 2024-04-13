@@ -9,6 +9,7 @@ import Header from './components/Header';
 import Profile from './components/Profile';
 import InstructorProfile from './components/InstructorProfile';
 import CalenderComponent from './components/CalenderComponent';
+import SignupPageForStudent from './components/SignUpPageForStudent';
 
 const App = () => {
   return (
@@ -24,7 +25,9 @@ const App = () => {
           path='/instructorprofile'
           element={<InstructorProfile />}
         ></Route>
+
         <Route path='/calender' element={<CalenderComponent />}></Route>
+        <Route path='/signupstudent' element={<SignupPageForStudent />}></Route>
       </Routes>
     </Router>
   );
