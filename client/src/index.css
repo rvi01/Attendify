@@ -2,10 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
-.custom-size-text {
-  font-size: 11px;
-}
+@layer components {
+  .custom-size-text {
+    font-size: 11px;
+  }
 
-h1 {
-  font-size: 2.5rem;
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  .rounded-days {
+    border: 1px solid rgb(225, 224, 224);
+    border-radius: 1px;
+    margin: 3px;
+    padding: 10px;
+  }
+
+  .react-big-calendar
+    .rbc-month-view
+    .rbc-month-row
+    + .rbc-month-row
+    .rbc-day-bg
+    + .rbc-day-bg {
+    border-left: none;
+  }
+  .react-big-calendar .rbc-month-row:first-child .rbc-header + .rbc-header {
+    border-top: none;
+  }
+  .react-big-calendar .rbc-month-view .rbc-event {
+    border: none;
+  }
 }

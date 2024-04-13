@@ -18,7 +18,7 @@ const SignupPageForStudent = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
-  const [userType, setUserType] = useState('');
+  // const [userType, setUserType] = useState('');
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
