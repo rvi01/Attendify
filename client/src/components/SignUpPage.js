@@ -41,6 +41,7 @@ const SignupPage = () => {
         "http://localhost:8000/api/submit",
         formData
       );
+      console.log("Response: ", response);
 
       const { token } = response.data.userData;
 

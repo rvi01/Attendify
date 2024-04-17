@@ -8,6 +8,9 @@ import TroubleLoggingIn from "./components/TroubleLoggingIn";
 import Header from "./components/Header";
 import Profile from "./components/Profile";
 
+import DatePicker from "./components/DatePicker";
+import DashboardStu from "./components/DashboardStu";
+
 const App = () => {
   return (
     <Router>
@@ -16,7 +19,8 @@ const App = () => {
         <Route path="/signin" element={<SignInPage />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/troublelogging" element={<TroubleLoggingIn />} />
-        <Route />
+        <Route path="/calendar" element={<DatePicker />} />
+        <Route path="/student" element={<DashboardStu />} />
         <Route path="/header" element={<Header />}></Route>
       </Routes>
     </Router>
