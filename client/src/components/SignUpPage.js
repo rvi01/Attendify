@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 
 const SignupPage = () => {
   const navigate = useNavigate();
+  const [userType, setUserType] = useState('instructor');
 
   const [email, setEmail] = useState('');
   const [selectBatch, setSelectBatch] = useState('Batch A');
@@ -75,30 +76,38 @@ const SignupPage = () => {
             <img src={Logo} alt='logo' className='' />
           </div>
           <div>
-            <ul className='flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400'>
-              <li className='me-2'>
-                <Link
-                  to='/'
-                  className={`inline-block p-4 text-blue-600 bg-gray-100 rounded-t-lg active dark:bg-gray-800 dark:text-blue-500 `}
-                  aria-current='page'
-                >
-                  Instructor
-                </Link>
-              </li>
-              <li className='me-2'>
-                <Link
-                  to='/signupstudent'
-                  className={`inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300 `}
-                >
-                  Student
-                </Link>
-              </li>
-            </ul>
             <h1 className='p-2  mt-4 text-xl text-customBlue'>
-              Welcome Instructor
+              Welcome {userType === 'instructor' ? 'Instructor' : 'Student'}
             </h1>
             <form onSubmit={handleSubmit} className='p-2 text-formFontColor'>
               {/* Email field */}
+
+              <div className=' flex '>
+                <div className='flex items-centery '>
+                  <input
+                    type='radio'
+                    id='instructor'
+                    value='instructor'
+                    checked={userType === 'instructor'}
+                    onChange={() => setUserType('instructor')}
+                  />
+                  <label htmlFor='instructor' className='ml-2'>
+                    Instructor
+                  </label>
+                </div>
+                <div className='flex items-center ml-2'>
+                  <input
+                    type='radio'
+                    id='student'
+                    value='student'
+                    checked={userType === 'student'}
+                    onChange={() => setUserType('student')}
+                  />
+                  <label htmlFor='student' className='ml-2'>
+                    Student
+                  </label>
+                </div>
+              </div>
               <div className=' m-2 flex flex-col'>
                 <label className='text-[14px]' htmlFor='email'>
                   Email
