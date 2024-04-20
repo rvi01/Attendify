@@ -11,6 +11,9 @@ import InstructorProfile from './components/InstructorProfile';
 import CalenderComponent from './components/CalenderComponent';
 import SignupPageForStudent from './components/SignUpPageForStudent';
 
+import DatePicker from "./components/DatePicker";
+import DashboardStu from "./components/DashboardStu";
+
 const App = () => {
   return (
     <Router>
