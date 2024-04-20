@@ -41,10 +41,7 @@ const SignupPage = () => {
         confirmPassword,
         rememberMe,
       };
-      const response = await axios.post(
-        'http://localhost:8000/api/submit',
-        formData
-      );
+      const response = await axios.post( 'http://localhost:8000/api/submit',formData);
 
       const { token } = response.data.userData;
       localStorage.setItem('token', token);
