@@ -52,7 +52,7 @@ const SignupPage = () => {
         confirmButtonText: 'OK',
       }).then((result) => {
         if (result.isConfirmed) {
-          navigate('/profile'); // Redirect to the profile page
+          navigate("/profile",{ state: { userData: response.data.userData } }); // Redirect to the profile page
         }
       });
     } catch (error) {
