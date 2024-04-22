@@ -7,6 +7,7 @@ const nodemailer = require('nodemailer');
 const port = process.env.PORT || 8000;
 require("./db/mongoose");
 const User = require("./models/user");
+const secretKey = process.env.JWT_SECRET;
 
 const app = express();
 console.log("here", __dirname);
@@ -42,8 +43,6 @@ app.post('/send-email', (req, res) => {
       text: 'Welcome to Attendify'
   };
 
-  console.log("mailOptions =>",mailOptions)
-
   transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
           console.log(error);
@@ -58,13 +57,23 @@ app.post('/send-email', (req, res) => {
 app.post("/api/submit", async (req, res) => {
   try {
     const user = new User(req.body);
-
     // const existingUser = await User.findOne({ email: user.email });
     // if (existingUser) {
     //   return res
     //     .status(400)
     //     .send({ error: "User with this email already exists." });
     // }
+
+
+    const userType = req.body.userType
+
+    if(userType == "student"){
+      user.isStudent = "Y",
+      user.role = "S"
+    } else {
+      user.isInstructor = "Y",
+      user.role = "I"
+    }
 
     const password = req.body.password;
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -79,7 +88,7 @@ app.post("/api/submit", async (req, res) => {
 
     const token = jwt.sign(
       { id: userData._id, email: userData.email },
-      "shhh", // process.env.jwtsecret
+      process.env.JWT_SECRET,
       {
         expiresIn: "2h",
       }
@@ -114,7 +123,7 @@ app.post("/api/submit", async (req, res) => {
           console.log(error);
           res.status(500).send('Error: Could not send email');
       } else {
-          console.log('Email sent: ' + info.response);
+          console.log('Email Verification sent: ' + info.response);
           res.send('Email sent successfully');
       }
     });
@@ -133,15 +142,14 @@ app.post("/api/submit", async (req, res) => {
 
 app.get('/verify-email', (req, res) => {
   const token = req.query.token;
-
   jwt.verify(token, secretKey, (err, decoded) => {
       if (err) {
           return res.status(401).json({ error: 'Invalid or expired token' });
       }
 
       console.log("Verified")
-
-      res.status(200).json({ message: 'Email verified successfully' });
+      const redirectUrl = "http://localhost:3000/signin";
+      res.status(200).redirect(redirectUrl);
   });
 });
 
@@ -149,7 +157,6 @@ app.post("/api/login", async (req, res) => {
   try {
     const loginEmail = req.body.email;
     const user = await User.findOne({ email: loginEmail });
-
     if (!user) {
       return res.status(401).json({ message: "Invalid username or password" });
     }
@@ -169,6 +176,14 @@ app.post("/api/login", async (req, res) => {
     }
   }
 });
+
+app.post("/api/profile", async(req, res) => {
+  const data = req.body
+  const email = data.email;
+
+  const user = await User.findOne({ email: email });
+  console.log("user =>",user);
+})
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);

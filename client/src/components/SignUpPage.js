@@ -34,12 +34,14 @@ const SignupPage = () => {
     e.preventDefault();
 
     try {
+      console.log("userType =>",userType)
       const formData = {
         email,
         selectBatch,
         password,
         confirmPassword,
         rememberMe,
+        userType
       };
       const response = await axios.post( 'http://localhost:8000/api/submit',formData);
 

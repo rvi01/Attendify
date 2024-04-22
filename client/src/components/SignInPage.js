@@ -33,8 +33,6 @@ const SignInPage = () => {
         rememberMe
       };
       const response = await axios.post('http://localhost:8000/api/login', formData);
-  
-      console.log("response =>",response);
       Swal.fire({
         icon: 'success',
         title: 'Success!',
@@ -53,7 +51,6 @@ const SignInPage = () => {
         confirmButtonText: 'OK'
       })
     }
-    
   }
 
   return (

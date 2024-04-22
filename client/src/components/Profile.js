@@ -1,20 +1,20 @@
 import React, { useState } from "react";
 import { useLocation  } from 'react-router-dom';
 import LockImage from "../images/lock.png";
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const Profile = () => {
   const location = useLocation ();
   const { userData } = location.state;
-  console.log("userData =>",userData);
   const { email, selectBatch} = userData
   const [fName, setFname] = useState("N/A");
   const [lName, setLname] = useState("N/A");
   const [phone, setNumber] = useState("N/A");
 
-  const getData = (e) => {
+  const getData = async (e) => {
     alert("getData")
     e.preventDefault();
-    
     try {
       const formData = {
         fName,
@@ -23,6 +23,7 @@ const Profile = () => {
         phone,
       };
       console.log("FormData =>",formData);
+      const response = await axios.post('http://localhost:8000/api/profile', formData);
     } catch (error) {
       
     }
