@@ -21,7 +21,7 @@ const InstructorProfile = () => {
             />
           </div>
           {/* Profile Form */}
-          <div className='order-2  mt-90 md:order-none md:w-1/2 md:pr-8 md:pl-4 w-full md:w-3/5 mt-70 sm:mt-10 '>
+          <div className='order-2  mt-90 md:order-none md:pr-8 md:pl-4 w-full md:w-3/5 mt-70 sm:mt-10 '>
             <Formik
               initialValues={{
                 email: '',
@@ -61,7 +61,7 @@ const InstructorProfile = () => {
               }) => (
                 <form
                   onSubmit={handleSubmit}
-                  className='space-y-4  w-[500px] px-8 py-20 border rounded  border-2 border-gray-300 bg-white shadow-md'
+                  className='space-y-4  w-[500px] px-8 py-20 border rounded border-gray-300 bg-white shadow-md'
                 >
                   {/* First Name */}
                   <div className='flex flex-col'>
