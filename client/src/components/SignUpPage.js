@@ -50,13 +50,9 @@ const SignupPage = () => {
       Swal.fire({
         icon: 'success',
         title: 'Success!',
-        text: 'SignIn successfully!',
+        text: 'We have sent you a verification link on your email. Please open your email and verify your Account! Thank You!!',
         confirmButtonText: 'OK',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          navigate("/profile",{ state: { userData: response.data.userData } }); // Redirect to the profile page
-        }
-      });
+      })
     } catch (error) {
       Swal.fire({
         icon: 'error',

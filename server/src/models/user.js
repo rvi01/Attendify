@@ -4,17 +4,14 @@ const validator = require("validator");
 const User = mongoose.model("User",{
     firstName: {
         type: String,
-        required: true,
         trim: true,
     },
     lastName: {
         type: String,
-        required: true,
         trim: true,
     },
     phone: {
         type: String,
-        required: true,
         trim: true,
     },
     email: {
@@ -47,6 +44,10 @@ const User = mongoose.model("User",{
         default: null
     },
     isInstructor: {
+        type: String,
+        default: null
+    },
+    isVerified: {
         type: String,
         default: null
     },

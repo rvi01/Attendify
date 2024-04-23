@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { useLocation  } from 'react-router-dom';
+import { useNavigate,useLocation  } from 'react-router-dom';
 import LockImage from "../images/lock.png";
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
 const Profile = () => {
+  const navigate = useNavigate()
   const location = useLocation ();
   const { userData } = location.state;
   const { email, selectBatch} = userData
@@ -13,7 +14,6 @@ const Profile = () => {
   const [phone, setNumber] = useState("N/A");
 
   const getData = async (e) => {
-    alert("getData")
     e.preventDefault();
     try {
       const formData = {
@@ -22,10 +22,25 @@ const Profile = () => {
         email,
         phone,
       };
-      console.log("FormData =>",formData);
-      const response = await axios.post('http://localhost:8000/api/profile', formData);
-    } catch (error) {
       
+      const response = await axios.post('http://localhost:8000/api/profile', formData);
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: response.data.message,
+        confirmButtonText: 'OK',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/calender",{ state: { userData: response.data.userData } }); // Redirect to the profile page
+        }
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: error.response.data.error,
+        confirmButtonText: 'OK',
+      });
     }
   };
 

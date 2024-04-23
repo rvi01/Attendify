@@ -66,13 +66,13 @@ app.post("/api/submit", async (req, res) => {
 
 
     const userType = req.body.userType
-
-    if(userType == "student"){
-      user.isStudent = "Y",
-      user.role = "S"
-    } else {
+    console.log("userType =>",userType)
+    if(userType == "instructor"){
       user.isInstructor = "Y",
       user.role = "I"
+    } else {
+      user.isStudent = "Y",
+      user.role = "S"
     }
 
     const password = req.body.password;
@@ -84,6 +84,9 @@ app.post("/api/submit", async (req, res) => {
       password: user.password,
       selectBatch: user.selectBatch,
       rememberMe: user.rememberMe,
+      isInstructor : user.isInstructor,
+      isStudent : user.isStudent,
+      role : user.role
     });
 
     const token = jwt.sign(
@@ -142,11 +145,19 @@ app.post("/api/submit", async (req, res) => {
 
 app.get('/verify-email', (req, res) => {
   const token = req.query.token;
-  jwt.verify(token, secretKey, (err, decoded) => {
+  jwt.verify(token, secretKey, async (err, decoded) => {
       if (err) {
           return res.status(401).json({ error: 'Invalid or expired token' });
       }
-
+      
+      var userId = decoded.id;
+      var userEmail = decoded.email
+      const user = await User.findOneAndUpdate(
+        { _id: userId },
+        { isVerified: true },
+        { new: true }
+      );
+      user.password = undefined;
       console.log("Verified")
       const redirectUrl = "http://localhost:3000/signin";
       res.status(200).redirect(redirectUrl);
@@ -163,12 +174,38 @@ app.post("/api/login", async (req, res) => {
 
     const password = user.password;
     const isPasswordValid = await bcrypt.compare(req.body.password, password);
-
+    console.log("isPasswordValid=>",isPasswordValid)
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid username or password" });
     }
 
-    res.status(201).json({ message: "Logged In Successfully", user });
+    if(user && isPasswordValid == true){
+      console.log("user =>",user);
+      const token = jwt.sign(
+        { id: user._id, email: user.email },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "2h",
+        }
+      );
+      console.log("token =>",token);
+      user.token = token;
+
+      //cookie section
+      const cookie = req.cookies;
+      console.log("cookie =>",cookie);
+      user.password = undefined;
+      const option = {
+        expires : new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+        httpOnly: true
+      }
+      res.status(200).cookie("token", token,option).json({
+        message: "Logged In Successfully",
+        success: true,
+        token,
+        user
+      })
+    }
   } catch (error) {
     {
       console.error("Error Logging In:", error);
@@ -178,11 +215,34 @@ app.post("/api/login", async (req, res) => {
 });
 
 app.post("/api/profile", async(req, res) => {
-  const data = req.body
-  const email = data.email;
+  
+  try {
+    const data = req.body
+    const email = data.email;
+    const verifyUser = await User.findOne({ email: email });
+    
+    if (verifyUser.isVerified == null ) {
+      return res
+        .status(400)
+        .send({ error: "User with this email is not verified." });
+    }
 
-  const user = await User.findOne({ email: email });
-  console.log("user =>",user);
+    const userData = await User.findOneAndUpdate(
+      { email: email },
+      { firstName: data.fName,
+        lastName: data.lName,
+        phone: data.phone
+      },
+      { new: true }
+    );
+    userData.password = undefined;  
+    res.status(201).json({ message: "Profile Updated", userData });
+  } catch (error) {
+    {
+      console.error("Error Logging In:", error);
+      res.status(500).json({ error: "An error occurred while Logging In" });
+    }
+  }
 })
 
 app.listen(port, () => {
