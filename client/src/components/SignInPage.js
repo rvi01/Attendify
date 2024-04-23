@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate  } from 'react-router-dom';
 import SignInImage from '../images/login-form.png';
 import Logo from '../images/logo.png';
 import Hide from '../images/Hide.png';
@@ -33,16 +33,16 @@ const SignInPage = () => {
         rememberMe
       };
       const response = await axios.post('http://localhost:8000/api/login', formData);
-  
-      console.log("response =>",response);
+      console.log("response =>",response)
       Swal.fire({
         icon: 'success',
         title: 'Success!',
         text: response.data.message,
         confirmButtonText: 'OK'
       }).then((result) => {
+        const state = { userData: response.data.user};
         if (result.isConfirmed) {
-          navigate(`/profile`);
+          navigate(`/profile`,{ state });
         }
       });
     } catch (error) {
@@ -53,7 +53,6 @@ const SignInPage = () => {
         confirmButtonText: 'OK'
       })
     }
-    
   }
 
   return (
