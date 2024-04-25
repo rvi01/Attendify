@@ -2,15 +2,14 @@ import "./index.css";
 
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
-import SignupPage from "./components/SignUpPage";
-import SignInPage from "./components/SignInPage";
-import TroubleLoggingIn from "./components/TroubleLoggingIn";
-import Header from "./components/Header";
-import Profile from "./components/Profile";
-import InstructorProfile from "./components/InstructorProfile";
-import CalenderComponent from "./components/CalenderComponent";
-import SignupPageForStudent from "./components/SignUpPageForStudent";
-
+import SignupPage from './components/SignUpPage';
+import SignInPage from './components/SignInPage';
+import TroubleLoggingIn from './components/TroubleLoggingIn';
+import Header from './components/Header';
+import Profile from './components/Profile';
+import InstructorProfile from './components/InstructorProfile';
+import CalenderComponent from './components/CalenderComponent';
+import SignupPageForStudent from './components/SignUpPageForStudent';
 import DatePicker from "./components/DatePicker";
 import DashboardStu from "./components/DashboardStu";
 import DashboardInstructor from "./components/DashboardInstructor";

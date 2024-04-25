@@ -7,6 +7,7 @@ const nodemailer = require('nodemailer');
 const port = process.env.PORT || 8000;
 require("./db/mongoose");
 const User = require("./models/user");
+const secretKey = process.env.JWT_SECRET;
 
 const app = express();
 console.log("here", __dirname);
@@ -42,8 +43,6 @@ app.post('/send-email', (req, res) => {
       text: 'Welcome to Attendify'
   };
 
-  console.log("mailOptions =>",mailOptions)
-
   transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
           console.log(error);
@@ -58,13 +57,23 @@ app.post('/send-email', (req, res) => {
 app.post("/api/submit", async (req, res) => {
   try {
     const user = new User(req.body);
-
     // const existingUser = await User.findOne({ email: user.email });
     // if (existingUser) {
     //   return res
     //     .status(400)
     //     .send({ error: "User with this email already exists." });
     // }
+
+
+    const userType = req.body.userType
+    console.log("userType =>",userType)
+    if(userType == "instructor"){
+      user.isInstructor = "Y",
+      user.role = "I"
+    } else {
+      user.isStudent = "Y",
+      user.role = "S"
+    }
 
     const password = req.body.password;
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -75,11 +84,14 @@ app.post("/api/submit", async (req, res) => {
       password: user.password,
       selectBatch: user.selectBatch,
       rememberMe: user.rememberMe,
+      isInstructor : user.isInstructor,
+      isStudent : user.isStudent,
+      role : user.role
     });
 
     const token = jwt.sign(
       { id: userData._id, email: userData.email },
-      "shhh", // process.env.jwtsecret
+      process.env.JWT_SECRET,
       {
         expiresIn: "2h",
       }
@@ -114,7 +126,7 @@ app.post("/api/submit", async (req, res) => {
           console.log(error);
           res.status(500).send('Error: Could not send email');
       } else {
-          console.log('Email sent: ' + info.response);
+          console.log('Email Verification sent: ' + info.response);
           res.send('Email sent successfully');
       }
     });
@@ -133,15 +145,22 @@ app.post("/api/submit", async (req, res) => {
 
 app.get('/verify-email', (req, res) => {
   const token = req.query.token;
-
-  jwt.verify(token, secretKey, (err, decoded) => {
+  jwt.verify(token, secretKey, async (err, decoded) => {
       if (err) {
           return res.status(401).json({ error: 'Invalid or expired token' });
       }
-
+      
+      var userId = decoded.id;
+      var userEmail = decoded.email
+      const user = await User.findOneAndUpdate(
+        { _id: userId },
+        { isVerified: true },
+        { new: true }
+      );
+      user.password = undefined;
       console.log("Verified")
-
-      res.status(200).json({ message: 'Email verified successfully' });
+      const redirectUrl = "http://localhost:3000/signin";
+      res.status(200).redirect(redirectUrl);
   });
 });
 
@@ -149,19 +168,44 @@ app.post("/api/login", async (req, res) => {
   try {
     const loginEmail = req.body.email;
     const user = await User.findOne({ email: loginEmail });
-
     if (!user) {
       return res.status(401).json({ message: "Invalid username or password" });
     }
 
     const password = user.password;
     const isPasswordValid = await bcrypt.compare(req.body.password, password);
-
+    console.log("isPasswordValid=>",isPasswordValid)
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid username or password" });
     }
 
-    res.status(201).json({ message: "Logged In Successfully", user });
+    if(user && isPasswordValid == true){
+      console.log("user =>",user);
+      const token = jwt.sign(
+        { id: user._id, email: user.email },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "2h",
+        }
+      );
+      console.log("token =>",token);
+      user.token = token;
+
+      //cookie section
+      const cookie = req.cookies;
+      console.log("cookie =>",cookie);
+      user.password = undefined;
+      const option = {
+        expires : new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+        httpOnly: true
+      }
+      res.status(200).cookie("token", token,option).json({
+        message: "Logged In Successfully",
+        success: true,
+        token,
+        user
+      })
+    }
   } catch (error) {
     {
       console.error("Error Logging In:", error);
@@ -169,6 +213,37 @@ app.post("/api/login", async (req, res) => {
     }
   }
 });
+
+app.post("/api/profile", async(req, res) => {
+  
+  try {
+    const data = req.body
+    const email = data.email;
+    const verifyUser = await User.findOne({ email: email });
+    
+    if (verifyUser.isVerified == null ) {
+      return res
+        .status(400)
+        .send({ error: "User with this email is not verified." });
+    }
+
+    const userData = await User.findOneAndUpdate(
+      { email: email },
+      { firstName: data.fName,
+        lastName: data.lName,
+        phone: data.phone
+      },
+      { new: true }
+    );
+    userData.password = undefined;  
+    res.status(201).json({ message: "Profile Updated", userData });
+  } catch (error) {
+    {
+      console.error("Error Logging In:", error);
+      res.status(500).json({ error: "An error occurred while Logging In" });
+    }
+  }
+})
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);

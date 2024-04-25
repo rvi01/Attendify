@@ -32,12 +32,14 @@ const SignupPage = () => {
     e.preventDefault();
 
     try {
+      console.log("userType =>",userType)
       const formData = {
         email,
         selectBatch,
         password,
         confirmPassword,
         rememberMe,
+        userType
       };
       const response = await axios.post(
         "http://localhost:8000/api/submit",
@@ -48,15 +50,11 @@ const SignupPage = () => {
       const { token } = response.data.userData;
       localStorage.setItem("token", token);
       Swal.fire({
-        icon: "success",
-        title: "Success!",
-        text: "SignIn successfully!",
-        confirmButtonText: "OK",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          navigate("/profile", { state: { userData: response.data.userData } }); // Redirect to the profile page
-        }
-      });
+        icon: 'success',
+        title: 'Success!',
+        text: 'We have sent you a verification link on your email. Please open your email and verify your Account! Thank You!!',
+        confirmButtonText: 'OK',
+      })
     } catch (error) {
       Swal.fire({
         icon: "error",
