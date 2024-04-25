@@ -34,12 +34,14 @@ const SignupPage = () => {
     e.preventDefault();
 
     try {
+      console.log("userType =>",userType)
       const formData = {
         email,
         selectBatch,
         password,
         confirmPassword,
         rememberMe,
+        userType
       };
       const response = await axios.post( 'http://localhost:8000/api/submit',formData);
 
@@ -48,13 +50,9 @@ const SignupPage = () => {
       Swal.fire({
         icon: 'success',
         title: 'Success!',
-        text: 'SignIn successfully!',
+        text: 'We have sent you a verification link on your email. Please open your email and verify your Account! Thank You!!',
         confirmButtonText: 'OK',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          navigate('/profile'); // Redirect to the profile page
-        }
-      });
+      })
     } catch (error) {
       Swal.fire({
         icon: 'error',
