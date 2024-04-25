@@ -12,7 +12,6 @@ const CalenderComponent = () => {
   const eventStyleGetter = (event, start, end, isSelected) => {
     const style = {
       borderRadius: '1px',
-
       boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
       backgroundColor: '#001270',
       color: '#FFFFFF',
