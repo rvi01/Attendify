@@ -59,25 +59,6 @@ const User = mongoose.model("User",{
         type: String,
         default: null
     },
-  },
-  password: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  selectBatch: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  rememberMe: {
-    type: String,
-    trim: true,
-  },
-  token: {
-    type: String,
-    default: null,
-  },
 });
 
 module.exports = User;

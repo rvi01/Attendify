@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate,useLocation  } from 'react-router-dom';
 import Header from "./Header";
 import g8 from "../images/g8.png";
 import Footer from "./Footer";
@@ -6,6 +7,8 @@ import Select from "react-select";
 import { CSVLink } from "react-csv";
 
 const DashboardInstructor = () => {
+  const location = useLocation ();
+  const { userData } = location.state;
   const appearances = [
     {
       Name: "Swastik Sharma",
@@ -59,7 +62,7 @@ const DashboardInstructor = () => {
 
   return (
     <>
-      <Header />
+      <Header userData={userData}/>
       <div className="bg-slate-100 pt-[50px]">
         <div className="flex justify-between ml-[189px] mr-[189px] bg-white rounded-xl  ">
           <div className="flex flex-col  my-[43px] ml-[42.71px]   space-y-4  ">

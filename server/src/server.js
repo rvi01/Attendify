@@ -57,13 +57,12 @@ app.post('/send-email', (req, res) => {
 app.post("/api/submit", async (req, res) => {
   try {
     const user = new User(req.body);
-    // const existingUser = await User.findOne({ email: user.email });
-    // if (existingUser) {
-    //   return res
-    //     .status(400)
-    //     .send({ error: "User with this email already exists." });
-    // }
-
+    const existingUser = await User.findOne({ email: user.email });
+    if (existingUser) {
+      return res
+        .status(400)
+        .send({ error: "User with this email already exists." });
+    }
 
     const userType = req.body.userType
     console.log("userType =>",userType)
@@ -174,13 +173,11 @@ app.post("/api/login", async (req, res) => {
 
     const password = user.password;
     const isPasswordValid = await bcrypt.compare(req.body.password, password);
-    console.log("isPasswordValid=>",isPasswordValid)
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid username or password" });
     }
 
     if(user && isPasswordValid == true){
-      console.log("user =>",user);
       const token = jwt.sign(
         { id: user._id, email: user.email },
         process.env.JWT_SECRET,
@@ -188,13 +185,11 @@ app.post("/api/login", async (req, res) => {
           expiresIn: "2h",
         }
       );
-      console.log("token =>",token);
       user.token = token;
-
+      console.log("token =>",token)
+      user.password = undefined;
       //cookie section
       const cookie = req.cookies;
-      console.log("cookie =>",cookie);
-      user.password = undefined;
       const option = {
         expires : new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
         httpOnly: true
@@ -215,7 +210,6 @@ app.post("/api/login", async (req, res) => {
 });
 
 app.post("/api/profile", async(req, res) => {
-  
   try {
     const data = req.body
     const email = data.email;
