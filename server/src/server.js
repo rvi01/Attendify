@@ -239,6 +239,10 @@ app.post("/api/profile", async(req, res) => {
   }
 })
 
+app.get("/testmessage", async(req, res) => {
+  return res.status(201).json({ success: "Server is Up" });
+})
+
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
