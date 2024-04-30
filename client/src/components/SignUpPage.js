@@ -42,7 +42,7 @@ const SignupPage = () => {
         userType
       };
       const response = await axios.post(
-        "http://localhost:8000/api/submit",
+        "https://attendify-gj3u.onrender.com/api/submit",
         formData
       );
       console.log("Response: ", response);

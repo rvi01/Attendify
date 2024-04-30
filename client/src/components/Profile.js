@@ -23,7 +23,7 @@ const Profile = () => {
         phone,
       };
       
-      const response = await axios.post('http://localhost:8000/api/profile', formData);
+      const response = await axios.post('https://attendify-gj3u.onrender.com/api/profile', formData);
       Swal.fire({
         icon: 'success',
         title: 'Success!',
