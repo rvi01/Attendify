@@ -3,7 +3,8 @@ import potter from '../images/download.jpeg';
 import Logo from '../images/logo.png';
 import { Link } from 'react-router-dom';
 
-const Header = () => {
+const Header = ({ userData }) => {
+  const { firstName, lastName, role } = userData;
   return (
     <>
       <nav className='flex justify-evenly mx-auto bg-profileNav my-auto h-20 shadow-xl'>
@@ -22,8 +23,8 @@ const Header = () => {
           <div>
             <img className='w-[50px]' src={potter} alt='User Avatar' />
           </div>
-          <a href='#' className='ml-2'>
-            John Ferdinand
+          <a href='/calender' className='ml-2'>
+            {firstName} {lastName}
           </a>
         </div>
       </nav>

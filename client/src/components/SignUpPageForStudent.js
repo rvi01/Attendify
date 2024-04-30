@@ -43,9 +43,6 @@ const SignupPageForStudent = () => {
         'http://localhost:8000/api/submit',
         formData
       );
-
-      const { token } = response.data.userData;
-      localStorage.setItem('token', token);
       Swal.fire({
         icon: 'success',
         title: 'Success!',

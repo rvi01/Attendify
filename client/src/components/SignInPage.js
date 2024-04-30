@@ -9,7 +9,6 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 
 const SignInPage = () => {
-  useAuth();
   const navigate = useNavigate()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -33,18 +32,72 @@ const SignInPage = () => {
         rememberMe
       };
       const response = await axios.post('http://localhost:8000/api/login', formData);
-      console.log("response =>",response)
-      Swal.fire({
-        icon: 'success',
-        title: 'Success!',
-        text: response.data.message,
-        confirmButtonText: 'OK'
-      }).then((result) => {
-        const state = { userData: response.data.user};
-        if (result.isConfirmed) {
-          navigate(`/profile`,{ state });
+      const state = { userData: response.data.user};
+      console.log("state =>",state)
+      const { token } = state.userData;
+      localStorage.setItem('token', token);
+      if(state.userData.isStudent == "Y"){
+        if(state.userData.firstName){
+          console.log("state =>",state)
+          Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: response.data.message,
+            confirmButtonText: 'OK'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              navigate(`/calender`,{ state });
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: response.data.message,
+            confirmButtonText: 'OK'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              navigate(`/profile`,{ state });
+            }
+          });
         }
-      });
+      } else if(state.userData.isInstructor == "Y"){
+        if(state.userData.firstName){
+          console.log("firstName =>",state.userData.firstName)
+          Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: response.data.message,
+            confirmButtonText: 'OK'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              navigate(`/instructor`,{ state });
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: response.data.message,
+            confirmButtonText: 'OK'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              navigate(`/profile`,{ state });
+            }
+          });
+        }
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: "Please Contact Admin for more info",
+          confirmButtonText: 'OK'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate(`/`);
+          }
+        });
+      }
     } catch (error) {
       Swal.fire({
         icon: 'error',

@@ -1,10 +1,21 @@
 import React, { useState } from 'react';
 import Header from './Header';
+import { useNavigate,useLocation  } from 'react-router-dom';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
 import Modal from './Modal';
+import useAuth from './AuthContext';
+import Swal from 'sweetalert2';
+
+
 const CalenderComponent = () => {
+  useAuth();
+  const navigate = useNavigate()
+  const location = useLocation ();
+  const { userData } = location.state;
+  const { email, selectBatch, _id, firstName, lastName, role} = userData
+  
   const localizer = momentLocalizer(moment);
   const [showModal, setShowModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -38,10 +49,10 @@ const CalenderComponent = () => {
   return (
     <>
       <div className='bg-blueBackgroundColor'>
-        <Header />
+        <Header userData={userData} />
         <h1 className='mt-2 ml-60 text-bold'>Calendar</h1>
         <div className='bg-white w-3/4 mx-auto my-auto h-120 mt-2 p-8 border rounded-xl  border-grey shadow-md'>
-          <Calendar
+          <Calendar 
             localizer={localizer}
             events={[
               {
@@ -64,7 +75,7 @@ const CalenderComponent = () => {
           </p>
         </div>
       </div>
-      {showModal && <Modal event={selectedEvent} onClose={handleCloseModal} />}
+      {showModal && <Modal userData={userData} event={selectedEvent} onClose={handleCloseModal} />}
     </>
   );
 };
