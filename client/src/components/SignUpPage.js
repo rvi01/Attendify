@@ -17,7 +17,7 @@ const SignupPage = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-  const [userType, setUserType] = useState("instructor");
+  const [userType, setUserType] = useState("student");
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -80,19 +80,7 @@ const SignupPage = () => {
               {/* Email field */}
 
               <div className=" flex ">
-                <div className="flex items-centery ">
-                  <input
-                    type="radio"
-                    id="instructor"
-                    value="instructor"
-                    checked={userType === "instructor"}
-                    onChange={() => setUserType("instructor")}
-                  />
-                  <label htmlFor="instructor" className="ml-2">
-                    Instructor
-                  </label>
-                </div>
-                <div className="flex items-center ml-2">
+              <div className="flex items-center ">
                   <input
                     type="radio"
                     id="student"
@@ -102,6 +90,18 @@ const SignupPage = () => {
                   />
                   <label htmlFor="student" className="ml-2">
                     Student
+                  </label>
+                </div>
+                <div className="flex items-centery ml-2">
+                  <input
+                    type="radio"
+                    id="instructor"
+                    value="instructor"
+                    checked={userType === "instructor"}
+                    onChange={() => setUserType("instructor")}
+                  />
+                  <label htmlFor="instructor" className="ml-2">
+                    Instructor
                   </label>
                 </div>
               </div>
