@@ -95,7 +95,7 @@ app.post("/api/submit", async (req, res) => {
         expiresIn: "2h",
       }
     );
-    const verificationLink = `http://localhost:${port}/verify-email?token=${token}`;
+    const verificationLink = `https://attendify-flax.vercel.app/verify-email?token=${token}`;
     function generateWelcomeEmail(verificationLink) {
       return `
           <html>
@@ -158,7 +158,7 @@ app.get('/verify-email', (req, res) => {
       );
       user.password = undefined;
       console.log("Verified")
-      const redirectUrl = "http://localhost:3000/signin";
+      const redirectUrl = "https://attendify-flax.vercel.app/signin";
       res.status(200).redirect(redirectUrl);
   });
 });
