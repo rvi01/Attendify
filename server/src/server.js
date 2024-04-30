@@ -95,7 +95,7 @@ app.post("/api/submit", async (req, res) => {
         expiresIn: "2h",
       }
     );
-    const verificationLink = `https://attendify-flax.vercel.app/verify-email?token=${token}`;
+    const verificationLink = `https://attendify-gj3u.onrender.com/verify-email?token=${token}`;
     function generateWelcomeEmail(verificationLink) {
       return `
           <html>
