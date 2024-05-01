@@ -26,7 +26,7 @@ const CalenderComponent = () => {
   const fetchdata = async () => {
     try {
       if(_id){
-        const response = await axios.get(`http://localhost:8000/data/${_id}`, {
+        const response = await axios.get(`https://attendify-gj3u.onrender.com/data/${_id}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
