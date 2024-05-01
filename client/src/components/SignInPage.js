@@ -34,8 +34,9 @@ const SignInPage = () => {
       const response = await axios.post('https://attendify-gj3u.onrender.com/api/login', formData);
       const state = { userData: response.data.user};
       console.log("state =>",state)
-      const { token } = state.userData;
-      localStorage.setItem('token', token);
+      const { token,_id  } = state.userData;
+      window.localStorage.setItem('token', token);
+      window.localStorage.setItem('isLoggedIn', true);
       if(state.userData.isStudent == "Y"){
         if(state.userData.firstName){
           console.log("state =>",state)
@@ -46,7 +47,7 @@ const SignInPage = () => {
             confirmButtonText: 'OK'
           }).then((result) => {
             if (result.isConfirmed) {
-              navigate(`/calender`,{ state });
+              navigate(`/calender`, { state: { _id } });
             }
           });
         } else {

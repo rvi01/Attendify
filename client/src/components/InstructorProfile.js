@@ -2,13 +2,16 @@ import React from 'react';
 import Header from './Header';
 import PadLock from '../images/pad-lock.png';
 import { Formik } from 'formik';
+import { useLocation  } from 'react-router-dom';
 
 const InstructorProfile = () => {
+  const location = useLocation ();
+  const { userData } = location.state;
   const areaCodes = ['+1 ', '+44 ', '+91 '];
 
   return (
     <>
-      <Header />
+      <Header userData={userData} />
       <div className='bg-blueBackgroundColor'>
         <div className='flex flex-col md:flex-row md:items-center md:justify-center justify-center items-center'>
           {/* Padlock Image */}

@@ -15,6 +15,17 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
+const verifyToken = (req, res, next) => {
+  const token = req.headers.authorization;
+  if (!token) return res.status(401).json({ message: 'No token provided' });
+
+  jwt.verify(token.split(' ')[1], secretKey, (err, decoded) => {
+    if (err) return res.status(403).json({ message: 'Failed to authenticate' });
+    req.userId = decoded.id;
+    next();
+  });
+};
+
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
     port: 587, // Port for TLS/STARTTLS
@@ -238,6 +249,26 @@ app.post("/api/profile", async(req, res) => {
     }
   }
 })
+
+app.get('/data/:id', verifyToken,async(req, res) => {
+  try {
+    const { id } = req.params;
+    if(id){
+      const userData = await User.findOne({ _id : id });
+      userData.password = undefined;
+      res.status(201).json({ message: "user found", userData });
+    } else {
+      res.status(404).json({ error: 'User not found' });
+    }
+    
+
+  } catch (error) {
+    {
+      console.error("Error Logging In:", error);
+      res.status(500).json({ error: "An error occurred while Logging In" });
+    }
+  }
+});
 
 app.get("/testmessage", async(req, res) => {
   return res.status(201).json({ success: "Server is Up" });

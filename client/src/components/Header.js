@@ -4,7 +4,13 @@ import Logo from '../images/logo.png';
 import { Link } from 'react-router-dom';
 
 const Header = ({ userData }) => {
-  const { firstName, lastName, role } = userData;
+  const { firstName, lastName, _id } = userData;
+  const SignOut = () => {
+    window.localStorage.removeItem("token");
+    window.localStorage.removeItem("isLoggedIn");
+
+    window.location.href = "/signin"
+  }
   return (
     <>
       <nav className='flex justify-evenly mx-auto bg-profileNav my-auto h-20 shadow-xl'>
@@ -26,6 +32,15 @@ const Header = ({ userData }) => {
           <a href='/calender' className='ml-2'>
             {firstName} {lastName}
           </a>
+          <div>
+            <button
+                type='button'
+                className='p-2 bg-slate-500 text-white w-full'
+                onClick={SignOut}
+              >
+                Sign out
+            </button>
+          </div>
         </div>
       </nav>
       <div
