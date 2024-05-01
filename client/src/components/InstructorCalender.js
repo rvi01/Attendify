@@ -3,10 +3,11 @@ import Header from './Header';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
-import Modal from './Modal';
-const CalenderComponent = () => {
+import ModalInstructor from './ModalInstructor';
+
+const InstructorCalender = () => {
   const localizer = momentLocalizer(moment);
-  const [showModal, setShowModal] = useState(false);
+  const [showInstructorModal, setShowInstructorModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
   const eventStyleGetter = (event, start, end, isSelected) => {
@@ -26,13 +27,14 @@ const CalenderComponent = () => {
       className: 'rounded-days',
     };
   };
+
   const handleEventClick = (event) => {
     setSelectedEvent(event);
-    setShowModal(true);
+    setShowInstructorModal(true);
   };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
+  const handleCloseInstructorModal = () => {
+    setShowInstructorModal(false);
   };
 
   return (
@@ -45,7 +47,7 @@ const CalenderComponent = () => {
             localizer={localizer}
             events={[
               {
-                title: 'COOP BATCH',
+                title: 'Title',
                 start: new Date(2024, 3, 12, 10, 0),
                 end: new Date(2024, 3, 12, 12, 0),
               },
@@ -57,16 +59,21 @@ const CalenderComponent = () => {
             }}
             eventPropGetter={eventStyleGetter}
             dayPropGetter={dayPropGetter}
-            onSelectEvent={handleEventClick}
+            onSelectEvent={handleEventClick} // Handle both student and instructor events
           />
           <p className='text-center p-4 mt-2 '>
             2024 Pragratime. All rights Reserved
           </p>
         </div>
       </div>
-      {showModal && <Modal event={selectedEvent} onClose={handleCloseModal} />}
+      {showInstructorModal && (
+        <ModalInstructor
+          event={selectedEvent}
+          onClose={handleCloseInstructorModal}
+        />
+      )}
     </>
   );
 };
 
-export default CalenderComponent;
+export default InstructorCalender;

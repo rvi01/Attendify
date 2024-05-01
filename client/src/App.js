@@ -8,10 +8,11 @@ import TroubleLoggingIn from './components/TroubleLoggingIn';
 import Header from './components/Header';
 import Profile from './components/Profile';
 import InstructorProfile from './components/InstructorProfile';
-import CalenderComponent from './components/CalenderComponent';
+import StudentCalender from './components/StudentCalender';
 import SignupPageForStudent from './components/SignUpPageForStudent';
-import DatePicker from "./components/DatePicker";
-import DashboardStu from "./components/DashboardStu";
+import DatePicker from './components/DatePicker';
+import DashboardStu from './components/DashboardStu';
+import InstructorCalender from './components/InstructorCalender';
 
 const App = () => {
   return (
@@ -28,7 +29,11 @@ const App = () => {
           element={<InstructorProfile />}
         ></Route>
 
-        <Route path='/calender' element={<CalenderComponent />}></Route>
+        <Route path='/calender/student' element={<StudentCalender />}></Route>
+        <Route
+          path='/calender/instructor'
+          element={<InstructorCalender />}
+        ></Route>
         <Route path='/signupstudent' element={<SignupPageForStudent />}></Route>
       </Routes>
     </Router>
