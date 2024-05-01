@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "./Header";
-import { Link } from "react-router-dom";
+
 import g8 from "../images/g8.png";
 import Footer from "./Footer";
 
