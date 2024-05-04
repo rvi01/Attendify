@@ -24,7 +24,7 @@ const MeetingModal = ({userData}) => {
             };
             console.log("formData =>",formData);
             if(_id){
-                const response = await axios.get(`http://localhost:8000/meetingData/${_id}`, {
+                const response = await axios.get(`https://attendify-gj3u.onrender.com/meetingData/${_id}`, {
                     headers: {
                     Authorization: `Bearer ${token}`
                     }
