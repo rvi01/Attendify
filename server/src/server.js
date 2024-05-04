@@ -197,7 +197,6 @@ app.post("/api/login", async (req, res) => {
         }
       );
       user.token = token;
-      console.log("token =>",token)
       user.password = undefined;
       //cookie section
       const cookie = req.cookies;
@@ -270,9 +269,14 @@ app.get('/data/:id', verifyToken,async(req, res) => {
   }
 });
 
+app.post('/meetingData',verifyToken, async(req,res) =>{
+  console.log("meetingData")
+})
+
 app.get("/testmessage", async(req, res) => {
   return res.status(201).json({ success: "Server is Up" });
 })
+
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);

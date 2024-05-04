@@ -37,6 +37,7 @@ const SignInPage = () => {
       const { token,_id  } = state.userData;
       window.localStorage.setItem('token', token);
       window.localStorage.setItem('isLoggedIn', true);
+      window.localStorage.setItem('_id',_id );
       if(state.userData.isStudent == "Y"){
         if(state.userData.firstName){
           console.log("state =>",state)

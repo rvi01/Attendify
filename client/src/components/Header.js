@@ -4,7 +4,7 @@ import Logo from '../images/logo.png';
 import { Link } from 'react-router-dom';
 
 const Header = ({ userData }) => {
-  const { firstName, lastName, _id } = userData;
+  const { firstName, lastName, _id, role } = userData || {};
   const SignOut = () => {
     window.localStorage.removeItem("token");
     window.localStorage.removeItem("isLoggedIn");
@@ -17,10 +17,24 @@ const Header = ({ userData }) => {
         <div>
           <img src={Logo} alt='Company Logo' />
         </div>
+
         <ul className='flex justify-around items-center p-4 m-4'>
-          <li className='mr-4'>
-            <Link to='/instructorprofile'>Dashboard</Link>
-          </li>
+        <li className='mr-4'>
+        { role === "I" ? (
+          <Link to={{
+            pathname: '/instructorprofile',
+            state: {_id}
+          }}>Dashboard</Link>
+        ) : role === "S" ? (
+          <Link to={{
+            pathname: '/student',
+            state: {_id}
+          }}>Dashboard</Link>
+        ): (
+          <Link to='/'>Home</Link>
+        )}
+        </li> 
+          
           <li className='ml-4'>
             <Link to='/calender'>Calendar</Link>
           </li>

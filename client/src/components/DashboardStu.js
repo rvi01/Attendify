@@ -1,10 +1,42 @@
-import React from "react";
+import { useState,useEffect } from "react";
+import { useNavigate,useLocation  } from 'react-router-dom';
+import axios from 'axios';
+import Swal from 'sweetalert2';
 import Header from "./Header";
-
 import g8 from "../images/g8.png";
 import Footer from "./Footer";
 
 const DashboardStu = () => {
+  const location = useLocation ();
+  const token = localStorage.getItem('token');
+  const _id = localStorage.getItem('_id');
+  const [userData, setUserData] = useState(null);
+
+  useEffect( () => {
+    fetchdata()
+  },[]);
+
+  const fetchdata = async () => {
+    try {
+      if(_id){
+        const response = await axios.get(`https://attendify-gj3u.onrender.com/data/${_id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setUserData(response.data.userData);
+        
+      }
+    } catch (error) {
+      Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.response.data.message,
+          confirmButtonText: 'OK'
+        })
+    }
+  };
+
   const appearances = [
     {
       date: "01-24-2024",

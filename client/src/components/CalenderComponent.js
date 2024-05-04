@@ -8,6 +8,7 @@ import moment from 'moment';
 import Modal from './Modal';
 import useAuth from './AuthContext';
 import Swal from 'sweetalert2';
+import MeetingModal from "./MeetingModal";
 
 
 const CalenderComponent = () => {
@@ -17,12 +18,13 @@ const CalenderComponent = () => {
   const token = localStorage.getItem('token');
   
   const [userData, setUserData] = useState(null);
-  const { _id } = location.state;
+  const [role, setRole] = useState("");
+  const _id = localStorage.getItem('_id');
 
   useEffect( () => {
-    
     fetchdata()
   },[])
+
   const fetchdata = async () => {
     try {
       if(_id){
@@ -32,7 +34,7 @@ const CalenderComponent = () => {
           }
         });
         setUserData(response.data.userData);
-        
+        setRole(response.data.userData.role)
       }
     } catch (error) {
       Swal.fire({
@@ -43,8 +45,16 @@ const CalenderComponent = () => {
         })
     }
   };
+
+  const CreateMeeting = async (event) => {
+    setSelectedEvent(event);
+    setshowMeetingModal(true);
+  }
+ 
   const localizer = momentLocalizer(moment);
   const [showModal, setShowModal] = useState(false);
+  
+  const [showMeetingModal, setshowMeetingModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
   const eventStyleGetter = (event, start, end, isSelected) => {
@@ -79,10 +89,19 @@ const CalenderComponent = () => {
       {userData ? (
         <Header userData={userData}/>
       ) : (
-        <p>Loading...</p>
+        <Header/>
       )}
-        <h1 className='mt-2 ml-60 text-bold'>Calendar</h1>
+        <div className="flex w-3/4  items-center justify-between">
+          <h1 className='mt-2 ml-60 text-bold'>Calendar</h1>
+          {role == "I" ? (
+            <button type="button" onClick={CreateMeeting} class="p-2 bg-slate-500 text-white">Create Meeting</button>
+          ) : (
+            <button type="button" class="p-2 invisible  bg-slate-500 text-white">Create</button>
+          )}
+          
+        </div>
         <div className='bg-white w-3/4 mx-auto my-auto h-120 mt-2 p-8 border rounded-xl  border-grey shadow-md'>
+        
           <Calendar 
             localizer={localizer}
             events={[
@@ -106,7 +125,10 @@ const CalenderComponent = () => {
           </p>
         </div>
       </div>
-      {showModal && <Modal event={selectedEvent} onClose={handleCloseModal} />}
+      
+      {showModal && <Modal userData={userData} event={selectedEvent} onClose={handleCloseModal} />}
+      {showMeetingModal && <MeetingModal userData={userData} event={selectedEvent} onClose={handleCloseModal} />}
+      
     </>
   );
 };
