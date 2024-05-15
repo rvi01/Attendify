@@ -16,6 +16,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 const verifyToken = (req, res, next) => {
+  console.log("verifyToken")
   const token = req.headers.authorization;
   if (!token) return res.status(401).json({ message: 'No token provided' });
 
@@ -107,44 +108,98 @@ app.post("/api/submit", async (req, res) => {
       }
     );
     const verificationLink = `https://attendify-gj3u.onrender.com/verify-email?token=${token}`;
-    function generateWelcomeEmail(verificationLink) {
-      return `
-          <html>
-              <head>
-                  <style>
-                      /* Add any CSS styling here */
-                  </style>
-              </head>
-              <body>
-                  <p>Hello</p>
-                  <p>Thank you for signing up for our app!</p>
-                  <p>Please click <a href="${verificationLink}">here</a> to verify your email address.</p>
-              </body>
-          </html>
-      `;
-    }
-
-    const mailOptions = {
-      from: 'attendfiy@gmail.com',
-      to: userData.email,
-      subject: "Welcome to Attendify",
-      html: generateWelcomeEmail(verificationLink)
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-          console.log(error);
-          res.status(500).send('Error: Could not send email');
-      } else {
-          console.log('Email Verification sent: ' + info.response);
-          res.send('Email sent successfully');
+    if (userData.role == "I") {
+      console.log("instructor");
+      function generateWelcomeEmail(verificationLink,userData) {
+        return `
+            <html>
+                <head>
+                    <style>
+                        /* Add any CSS styling here */
+                    </style>
+                </head>
+                <body>
+                    <p>Hello admin</p>
+                    <p>We Recevied this profile for Instructor Role</p>
+                    <table>
+                      <thead>
+                          <tr>
+                              <th>Email</th>
+                              <th>Batch</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr>
+                              <td>${userData.email}</td>
+                              <td>${userData.selectBatch}</td>
+                          </tr>
+                      </tbody>
+                  </table>
+                  <p></p>
+                  <p>Please click <a href="${verificationLink}">here</a> to verify this profile.</p>
+                </body>
+            </html>
+        `;
       }
-    });
+      const mailOptions = {
+        from: 'attendfiy@gmail.com',
+        to: 'attendfiy@gmail.com',
+        subject: "Instructor Verification",
+        html: generateWelcomeEmail(verificationLink,userData)
+      };
 
-    userData.token = token;
-    userData.password = undefined;
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.log(error);
+            res.status(500).send('Error: Could not send email');
+        } else {
+            console.log('Email Verification sent: ' + info.response);
+            res.send('Email sent successfully');
+        }
+      });
+      userData.token = token;
+      userData.password = undefined;
+      res.status(201).json({ message: "Form submitted successfully", userData });
+    } else {
+      const verificationLink = `https://attendify-gj3u.onrender.com/verify-email?token=${token}`;
+      function generateWelcomeEmail(verificationLink) {
+        return `
+            <html>
+                <head>
+                    <style>
+                        /* Add any CSS styling here */
+                    </style>
+                </head>
+                <body>
+                    <p>Hello</p>
+                    <p>Thank you for signing up for our app!</p>
+                    <p>Please click <a href="${verificationLink}">here</a> to verify your email address.</p>
+                </body>
+            </html>
+        `;
+      }
 
-    res.status(201).json({ message: "Form submitted successfully", userData });
+      const mailOptions = {
+        from: 'attendfiy@gmail.com',
+        to: userData.email,
+        subject: "Welcome to Attendify",
+        html: generateWelcomeEmail(verificationLink)
+      };
+
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.log(error);
+            res.status(500).send('Error: Could not send email');
+        } else {
+            console.log('Email Verification sent: ' + info.response);
+            res.send('Email sent successfully');
+        }
+      });
+
+      userData.token = token;
+      userData.password = undefined;
+      res.status(201).json({ message: "Form submitted successfully", userData });
+    }
   } catch (error) {
     console.error("Error submitting form:", error);
     res

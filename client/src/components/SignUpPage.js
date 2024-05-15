@@ -41,21 +41,31 @@ const SignupPage = () => {
         rememberMe,
         userType
       };
+     
       const response = await axios.post(
         "https://attendify-gj3u.onrender.com/api/submit",
         formData
       );
-      console.log("Response: ", response);
-
       const { token } = response.data.userData;
       localStorage.setItem("token", token);
-      Swal.fire({
-        icon: 'success',
-        title: 'Success!',
-        text: 'We have sent you a verification link on your email. Please open your email and verify your Account! Thank You!!',
-        confirmButtonText: 'OK',
-      })
+      
+      if(response.data.userData.role === "I"){
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'We have sent your profile to out admin. Please wait for approval! Thank You!!',
+          confirmButtonText: 'OK',
+        })
+      } else {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'We have sent you a verification link on your email. Please open your email and verify your Account! Thank You!!',
+          confirmButtonText: 'OK',
+        })
+      }
     } catch (error) {
+      
       Swal.fire({
         icon: "error",
         title: "Oops...",
