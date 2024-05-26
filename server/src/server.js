@@ -7,10 +7,10 @@ const nodemailer = require('nodemailer');
 const port = process.env.PORT || 8000;
 require("./db/mongoose");
 const User = require("./models/user");
+const MeetingModel = require("./models/meetingModal")
 const secretKey = process.env.JWT_SECRET;
 
 const app = express();
-console.log("here", __dirname);
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
@@ -324,8 +324,25 @@ app.get('/data/:id', verifyToken,async(req, res) => {
   }
 });
 
-app.post('/meetingData',verifyToken, async(req,res) =>{
+app.post('/meetingData/:id',verifyToken, async(req,res) =>{
   console.log("meetingData")
+  try {
+    const data = req.body.formData
+    console.log("data =>",data)
+    const meetingData = await MeetingModel.create({
+      TopicName: data.TopicName,
+      InstructorName: data.InstructorName,
+      SelectBatch: data.SelectBatch,
+      MeetingDate: data.MeetingDate,
+      MeetingTime: data.MeetingTime,
+      ClassLink: data.ClassLink,
+      InstructorId: data._id,
+    });
+    console.log("meetingData =>",meetingData);
+    res.status(201).json({ message: "Meeting Saved successfully", meetingData });
+  } catch (error) {
+    
+  }
 })
 
 app.get("/testmessage", async(req, res) => {

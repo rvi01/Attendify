@@ -11,6 +11,8 @@ const dbHost = process.env.DB_HOST
 const dbPort = process.env.DB_PORT
 const dbName = process.env.DB_NAME
 
+// const dbConnectionString = `${dbProtocol}://${dbHost}:${dbPort}/${dbName}`;
+
 const dbConnectionString = `mongodb+srv://attendfiy:KyMyOQ7vXYLBUTsX@attendify.mvufqlf.mongodb.net/?retryWrites=true&w=majority&appName=Attendify`;
 console.log("dbConnectionString =>",dbConnectionString)
 

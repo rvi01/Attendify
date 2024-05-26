@@ -1,13 +1,16 @@
 import React,{useState} from "react";
+import { useNavigate  } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
 const MeetingModal = ({userData}) => {
     const token = localStorage.getItem('token');
-    
+    const navigate = useNavigate()
     const { firstName, role, _id} = userData;
     const [TopicName, setTopicName] = useState('');
     const [InstructorName, setInstructorName] = useState('');
+    const [MeetingDate, setMeetingDate] = useState('');
+    const [MeetingTime, setMeetingTime] = useState('');
     const [SelectBatch, setSelectBatch] = useState('');
     const [ClassLink, setClassLink] = useState('');
 
@@ -19,21 +22,37 @@ const MeetingModal = ({userData}) => {
                 TopicName,
                 InstructorName,
                 SelectBatch,
+                MeetingDate,
+                MeetingTime,
                 ClassLink,
-                firstName,
-                role,
                 _id,
             };
             console.log("formData =>",formData);
             if(_id){
-                const response = await axios.post(`http://localhost:8000/meetingData/${_id}`, {
+                const response = await axios.post(`https://attendify-gj3u.onrender.com/meetingData/${_id}`, {
                     headers: {
                     Authorization: `Bearer ${token}`
-                    }   
+                    },
+                    formData
                 });
             }
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Meeting Saved successfully',
+                confirmButtonText: 'OK',
+              }).then((result) => {
+                if (result.isConfirmed) {
+                    navigate(`/instructor`);
+                }
+              });
         } catch (error) {
-            
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: error.response.data.error,
+                confirmButtonText: "OK",
+            });
         }
     }
 
@@ -68,23 +87,13 @@ const MeetingModal = ({userData}) => {
                         </div>
                         <div class="col-span-2 sm:col-span-1">
                             <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Select Time and time</label>
-                            <select id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
-                                <option selected="">Select category</option>
-                                <option value="TV">TV/Monitors</option>
-                                <option value="PC">PC</option>
-                                <option value="GA">Gaming/Console</option>
-                                <option value="PH">Phones</option>
-                            </select>
+                            <input type="date" name="MeetingDate" id="MeetingDate" onChange={(e) => setMeetingDate(e.target.value)} 
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5" placeholder="Instructor Name" required=""></input>
                         </div>
                         <div class="col-span-2 sm:col-span-1">
                             <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">category</label>
-                            <select id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
-                                <option selected="">Select category</option>
-                                <option value="TV">TV/Monitors</option>
-                                <option value="PC">PC</option>
-                                <option value="GA">Gaming/Console</option>
-                                <option value="PH">Phones</option>
-                            </select>
+                            <input type="time" name="MeetingTime" id="MeetingTime" onChange={(e) => setMeetingTime(e.target.value)} 
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5" placeholder="Instructor Name" required=""></input>
                         </div>
                         <div class="col-span-2">
                             <label for="ClassLink" class="block mb-2 text-sm font-medium text-gray-900">Class Link</label>
