@@ -18,6 +18,7 @@ const CalenderComponent = () => {
   const token = localStorage.getItem('token');
   
   const [userData, setUserData] = useState(null);
+  const [meetingData, setMeetingData] = useState([]);
   const [role, setRole] = useState("");
   const _id = localStorage.getItem('_id');
 
@@ -33,8 +34,10 @@ const CalenderComponent = () => {
             Authorization: `Bearer ${token}`
           }
         });
+        const meetingResponseData = await axios.get(`http://localhost:8000/meetingData`);
         setUserData(response.data.userData);
-        setRole(response.data.userData.role)
+        setRole(response.data.userData.role);
+        setMeetingData(meetingResponseData.data.meetingData)
       }
     } catch (error) {
       Swal.fire({
@@ -45,7 +48,7 @@ const CalenderComponent = () => {
         })
     }
   };
-
+  
   const CreateMeeting = async (event) => {
     setSelectedEvent(event);
     setshowMeetingModal(true);
@@ -101,16 +104,13 @@ const CalenderComponent = () => {
           
         </div>
         <div className='bg-white w-3/4 mx-auto my-auto h-120 mt-2 p-8 border rounded-xl  border-grey shadow-md'>
-        
           <Calendar 
             localizer={localizer}
-            events={[
-              {
-                title: 'COOP BATCH',
-                start: new Date(2024, 3, 12, 10, 0),
-                end: new Date(2024, 3, 12, 12, 0),
-              },
-            ]}
+            events={meetingData.map(meeting => ({
+              title: meeting.TopicName,
+              start: new Date(meeting.MeetingDate),
+              end: new Date(meeting.MeetingDate),
+            }))}
             startAccessor='start'
             endAccessor='end'
             style={{
@@ -126,7 +126,7 @@ const CalenderComponent = () => {
         </div>
       </div>
       
-      {showModal && <Modal userData={userData} event={selectedEvent} onClose={handleCloseModal} />}
+      {showModal && <Modal userData={userData} meetingData={meetingData} event={selectedEvent} onClose={handleCloseModal} />}
       {showMeetingModal && <MeetingModal userData={userData} event={selectedEvent} onClose={handleCloseModal} />}
       
     </>

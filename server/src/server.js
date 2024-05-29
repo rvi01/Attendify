@@ -34,7 +34,7 @@ const transporter = nodemailer.createTransport({
     auth: {
       method: 'LOGIN',
       user: 'attendfiy@gmail.com',
-      pass: 'oslc iyvd cial glld'
+      pass: 'fyrl jrjk jlno nsdv'
     }
 });
 
@@ -325,7 +325,6 @@ app.get('/data/:id', verifyToken,async(req, res) => {
 });
 
 app.post('/meetingData/:id',verifyToken, async(req,res) =>{
-  console.log("meetingData")
   try {
     const data = req.body.formData
     console.log("data =>",data)
@@ -343,6 +342,11 @@ app.post('/meetingData/:id',verifyToken, async(req,res) =>{
   } catch (error) {
     
   }
+})
+
+app.get('/meetingData',async(req, res) => {
+  const meetingData = await MeetingModel.find({});
+  res.status(201).json({ message: "Meeting Data", meetingData });
 })
 
 app.get("/testmessage", async(req, res) => {
